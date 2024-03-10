@@ -39,19 +39,20 @@ async function scrapFunction() {
         .then(data => {
             result_data = data.inventory;
             for (let i = 0; i < result_data.length; i++) {
-                const link = result_data[i].show_link;
+                const link = result_data[i].pdf_url;
                 console.log(link);
-                const result = { link };
-                const csv = parser.parse(result);
-                const csvDataWithoutHeader = csv.split('\n')[1] + '\n';
-                fs.appendFileSync("leeassociates_link.csv", csvDataWithoutHeader, 'utf8', (err) => {
-                    if (err) {
-                        console.error('Error appending to CSV file:', err);
-                    } else {
-                        console.log('CSV data appended successfully.');
-                    }
-                });
-                
+                if (link) {
+                    const result = { link };
+                    const csv = parser.parse(result);
+                    const csvDataWithoutHeader = csv.split('\n')[1] + '\n';
+                    fs.appendFileSync("leeassociates_pdf.csv", csvDataWithoutHeader, 'utf8', (err) => {
+                        if (err) {
+                            console.error('Error appending to CSV file:', err);
+                        } else {
+                            console.log('CSV data appended successfully.');
+                        }
+                    });
+                }
             }
         })
         .catch(error => {
